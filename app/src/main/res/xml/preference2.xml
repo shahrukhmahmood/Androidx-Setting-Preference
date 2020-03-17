@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+<PreferenceCategory
+
+    android:icon="@drawable/profile_icon"
+    >
+    <Preference></Preference>
+
+</PreferenceCategory>
+<PreferenceCategory
+
+    >
+    <EditTextPreference
+        android:key="fname"
+        android:title="First Name"
+        android:dialogTitle="First Name"
+
+        />
+
+    <EditTextPreference
+        android:key="lname"
+        android:title="Last Name"
+        android:dialogTitle="Last Name"
+        />
+    <EditTextPreference
+        android:key="email"
+        android:title="Email"
+        android:dialogTitle="Confirm your email address"
+        />
+    <EditTextPreference
+        android:key="phone"
+        android:title="Phone Number"
+        android:dialogTitle="Phone"
+        />
+</PreferenceCategory>
+</PreferenceScreen>

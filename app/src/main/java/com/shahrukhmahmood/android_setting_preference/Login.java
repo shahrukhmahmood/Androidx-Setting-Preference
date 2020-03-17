@@ -68,12 +68,12 @@ public class Login extends AppCompatActivity {
                             JSONObject json = new JSONObject(response);
                             if (json.getString("status").equals("200")) {
                                 token = json.getString("token");
-                                Bundle bundle = new Bundle();
+                                //Bundle bundle = new Bundle();
 
-                                bundle.putString("message", token );
+                                //bundle.putString("message", token );
 //                                    MyFragment myObj = new MyFragment();
-                                SettingsFragment fragInfo = new SettingsFragment();
-                                fragInfo.setArguments(bundle);
+                                //SettingsFragment fragInfo = new SettingsFragment();
+                                //fragInfo.setArguments(bundle);
                                 Toast.makeText(Login.this, response, Toast.LENGTH_LONG).show();
 
                                 Intent i = new Intent(Login.this, SettingsActivity.class);

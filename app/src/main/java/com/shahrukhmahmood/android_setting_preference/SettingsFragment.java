@@ -2,6 +2,7 @@
 package com.shahrukhmahmood.android_setting_preference;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,10 +37,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private String lastName;
     private String phoneNumber;
     private String email;
-    private String publicFirstName;
-    private String publicLastName;
-    private String publicphone;
-    private String publicemail;
+    public static String publicFirstName;
+    public static String publicLastName;
+    public static String publicname;
+    public static String publicphone;
+    public static String publicemail;
     public  String token1;
 
     @Override
@@ -61,6 +63,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             e.printStackTrace();
         }
 
+        Preference pref = findPreference("name");
+
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                Intent i = new Intent(getActivity(), UpdateActivity.class);
+                SettingsFragment.this.startActivity(i);
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -85,11 +97,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                 publicphone = jsonObject.getString("phone_number");
                                 publicemail = jsonObject.getString("email");
 
-                                publicFirstName= publicFirstName+" "+publicLastName;
+                                publicname= publicFirstName+" "+publicLastName;
                                 Preference mPref2 = findPreference("name");
-                                mPref2.setTitle(publicFirstName);
-                                mPref2.setTitle(publicemail);
-                                mPref2.setSummary(publicphone);
+                                mPref2.setTitle(publicname);
+                                mPref2.setSummary(publicphone+"\n"+publicemail);
                                 Log.e("VOLLEY", publicFirstName);
 
                                 Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
