@@ -44,19 +44,19 @@ public class UpdateFragment extends PreferenceFragmentCompat {
             final EditTextPreference editTextPassword = findPreference("password");
 
             editTextFirstName.setSummary(sharedPreferences.getString("first_name", ""));
-            editTextFirstName.setText(sharedPreferences.getString("first_name", ""));
+//            editTextFirstName.setText(sharedPreferences.getString("first_name", ""));
             editTextFirstName.setIconSpaceReserved(false);
 
             editTextLastName.setSummary(sharedPreferences.getString("last_name", ""));
-            editTextLastName.setText(sharedPreferences.getString("last_name", ""));
+//            editTextLastName.setText(sharedPreferences.getString("last_name", ""));
             editTextLastName.setIconSpaceReserved(false);
 
             editTextEmail.setSummary(sharedPreferences.getString("email", ""));
-            editTextEmail.setText(sharedPreferences.getString("email", ""));
+//            editTextEmail.setText(sharedPreferences.getString("email", ""));
             editTextEmail.setIconSpaceReserved(false);
 
             editTextPhoneNumber.setSummary(sharedPreferences.getString("phone_number", ""));
-            editTextPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
+//            editTextPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
             editTextPhoneNumber.setIconSpaceReserved(false);
 
             editTextPassword.setSummary("********");
