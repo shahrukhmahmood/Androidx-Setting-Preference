@@ -2,7 +2,6 @@
 package com.shahrukhmahmood.android_setting_preference;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,7 +10,6 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,20 +25,15 @@ import java.util.Map;
 
 public class UPDATEFragment extends PreferenceFragmentCompat {
 
-
-    private String firstnameEdit_Value="";
-    private String lastnameEdit_Value="";
+    private String firstNameEditValue;
+    private String lastNameEditValue;
     SharedPreferences sharedPreferences;
-   // EditTextPreference editFirstName1= findPreference("firstName");
-
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.update_account_setting_preference);
 
-         sharedPreferences = this.getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-
+        sharedPreferences = this.getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         try{
             final EditTextPreference editTextFirstName = findPreference("firstName");
             final EditTextPreference editTextLastName = findPreference("lastName");
@@ -64,7 +57,7 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
             editTextPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
             editTextPhoneNumber.setIconSpaceReserved(false);
 
-            editTextPassword.setSummary("**********");
+            editTextPassword.setSummary("********");
             editTextPassword.setIconSpaceReserved(false);
 
 
@@ -72,11 +65,11 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    firstnameEdit_Value = newValue.toString();
-                    name_update();
-                    editTextFirstName.setSummary(firstnameEdit_Value);
+                    firstNameEditValue = newValue.toString();
+                    if (name_update()){
+                        editTextFirstName.setSummary(firstNameEditValue);
+                    }
                     return true;
-
                 }
             });
 
@@ -85,9 +78,10 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    lastnameEdit_Value = newValue.toString();
-                    name_update();
-                    editTextLastName.setSummary(lastnameEdit_Value);
+                    lastNameEditValue = newValue.toString();
+                    if(name_update()){
+                        editTextLastName.setSummary(lastNameEditValue);
+                    }
                     return true;
 
                 }
@@ -103,74 +97,73 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-
     }
 
-
-    public void name_update() {
+    boolean flag = false;
+    public boolean name_update() {
 
         String url = "http://52.15.104.184/update/name/";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
-                    //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onResponse(String response) {
-
-
-                        try {
-                            JSONObject json = new JSONObject(response);
-                            if (json.getString("status").equals("200")) {
-
-
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                // editor.putString("Token", token);
-                                //editor.apply();
-                                editor.putString("first_name", firstnameEdit_Value);
-
-                                editor.apply();
-                                Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
-
-                                //Intent i = new Intent(Login.this, SettingsActivity.class);
-                                //Login.this.startActivity(i);
-
-                            }
-
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                })
-
-
-        {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("first_name",firstnameEdit_Value);
-                params.put("last_name",lastnameEdit_Value);
-
-                return params;
-            }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", sharedPreferences.getString("Token", ""));
-                return headers;
-            }
+            public void onResponse(String response) {
 
-        };
+                try {
+                    JSONObject json = new JSONObject(response);
+                    if (json.getString("status").equals("200")) {
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+                        editor.putString("first_name", json.getString("first_name"));
+                        editor.putString("last_name", json.getString("last_name"));
+                        editor.apply();
+
+                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
+                        flag = true;
+
+                    }
+                    else if(json.getString("status").equals("404") || json.getString("status").equals("400")){
+                        Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
+                        flag = false;
+                    }
+
+                }
+                catch (JSONException e) {
+                    flag = false;
+                    e.printStackTrace();
+                }
+            }},
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    flag = false;
+                }
+            })
+
+            {
+                @Override
+                protected Map<String,String> getParams(){
+                    Map<String,String> params = new HashMap<>();
+                    params.put("first_name", firstNameEditValue);
+                    params.put("last_name", lastNameEditValue);
+
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", sharedPreferences.getString("Token", ""));
+                    return headers;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
+            requestQueue.add(stringRequest);
+            return flag;
     }
 
 //    private SharedPreferences sharedPreferences;
