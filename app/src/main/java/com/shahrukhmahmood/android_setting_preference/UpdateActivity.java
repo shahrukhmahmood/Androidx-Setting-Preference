@@ -26,6 +26,7 @@ public class UpdateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content,
                         new UPDATEFragment()).commit();

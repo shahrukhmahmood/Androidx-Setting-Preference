@@ -1,61 +1,42 @@
 
 package com.shahrukhmahmood.android_setting_preference;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UPDATEFragment extends PreferenceFragmentCompat {
 
-
-    public String firstname=SettingsFragment.publicFirstName;
-    public String lastname=SettingsFragment.publicLastName;
-    public String phone=SettingsFragment.publicphone;
-    public String email=SettingsFragment.publicemail;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.update_account_setting_preference);
 
-        addPreferencesFromResource(R.xml.preference2);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
 
-        EditTextPreference editfname = findPreference("fname");
-        EditTextPreference editlname = findPreference("lname");
-        EditTextPreference editmail = findPreference("email");
-        EditTextPreference editphone = findPreference("phone");
+        try{
+            EditTextPreference editFirstName = findPreference("firstName");
+            EditTextPreference editLastName = findPreference("lastName");
+            EditTextPreference editEmail = findPreference("email");
+            EditTextPreference editPhoneNumber = findPreference("phoneNumber");
 
-        editfname.setSummary(firstname);
-        editfname.setText(firstname);
+            editFirstName.setSummary(sharedPreferences.getString("first_name", ""));
+            editFirstName.setText(sharedPreferences.getString("first_name", ""));
 
-        editlname.setSummary(lastname);
-        editlname.setText(lastname);
+            editLastName.setSummary(sharedPreferences.getString("last_name", ""));
+            editLastName.setText(sharedPreferences.getString("last_name", ""));
 
-        editmail.setSummary(email);
-        editmail.setText(email);
+            editEmail.setSummary(sharedPreferences.getString("email", ""));
+            editEmail.setText(sharedPreferences.getString("email", ""));
 
-        editphone.setSummary(phone);
-        editphone.setText(phone);
+            editPhoneNumber.setSummary(sharedPreferences.getString("phone_number", ""));
+            editPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
     @Override
@@ -82,7 +63,7 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
 //        try{
 //            token1 = Login.token;
 //
-//            addPreferencesFromResource(R.xml.preferences);
+//            addPreferencesFromResource(R.xml.AccountSettingPreference);
 //            account_details();
 //
 //            final PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("name_cat");
@@ -97,7 +78,7 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
 //
 //    @Override
 //    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-//        /*setPreferencesFromResource(R.xml.preferences, rootKey);*/
+//        /*setPreferencesFromResource(R.xml.AccountSettingPreference, rootKey);*/
 //    }
 //
 //    public void account_details()

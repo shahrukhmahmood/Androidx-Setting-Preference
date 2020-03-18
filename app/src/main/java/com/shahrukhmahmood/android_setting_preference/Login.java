@@ -2,6 +2,7 @@ package com.shahrukhmahmood.android_setting_preference;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,7 +37,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+
+        sharedPreferences = getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
 
         user = findViewById(R.id.username);
         passw =  findViewById(R.id.password);
@@ -67,14 +71,12 @@ public class Login extends AppCompatActivity {
                         try {
                             JSONObject json = new JSONObject(response);
                             if (json.getString("status").equals("200")) {
-                                token = json.getString("token");
-                                //Bundle bundle = new Bundle();
 
-                                //bundle.putString("message", token );
-//                                    MyFragment myObj = new MyFragment();
-                                //SettingsFragment fragInfo = new SettingsFragment();
-                                //fragInfo.setArguments(bundle);
-                                Toast.makeText(Login.this, response, Toast.LENGTH_LONG).show();
+                                token = json.getString("token");
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("Token", token);
+                                editor.apply();
 
                                 Intent i = new Intent(Login.this, SettingsActivity.class);
                                 Login.this.startActivity(i);

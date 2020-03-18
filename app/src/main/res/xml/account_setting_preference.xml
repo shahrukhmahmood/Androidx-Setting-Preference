@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
@@ -22,10 +20,9 @@
             />
 
         <Preference
-            android:key="w_place"
+            android:key="work_place"
             android:summary="Click to add work place"
-            android:title="Add Work Place"
-            />
+            android:title="Add Work Place" />
 
     </PreferenceCategory>
 

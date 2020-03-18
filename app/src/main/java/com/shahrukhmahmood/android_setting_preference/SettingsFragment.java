@@ -24,39 +24,30 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+import static com.shahrukhmahmood.android_setting_preference.Login.AppPreferences;
+
 import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceCategory;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private SharedPreferences sharedPreferences;
+    private String name;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
-    public static String publicFirstName;
-    public static String publicLastName;
-    public static String publicname;
-    public static String publicphone;
-    public static String publicemail;
-    public  String token1;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
 
         try{
-            token1 = Login.token;
-
-            addPreferencesFromResource(R.xml.preferences);
+            sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
+            addPreferencesFromResource(R.xml.account_setting_preference);
             account_details();
-
-            final PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("name_cat");
-            PreferenceScreen preferenceScreen = this.getPreferenceScreen();
 
         }
         catch (Exception e){
@@ -77,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        /*setPreferencesFromResource(R.xml.preferences, rootKey);*/
+        /*setPreferencesFromResource(R.xml.AccountSettingPreference, rootKey);*/
     }
 
     public void account_details()
@@ -92,18 +83,23 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("status").equals("200")) {
 
-                                publicFirstName = jsonObject.getString("first_name");
-                                publicLastName = jsonObject.getString("last_name");
-                                publicphone = jsonObject.getString("phone_number");
-                                publicemail = jsonObject.getString("email");
+                                firstName = jsonObject.getString("first_name");
+                                lastName = jsonObject.getString("last_name");
+                                phoneNumber = jsonObject.getString("phone_number");
+                                email = jsonObject.getString("email");
 
-                                publicname= publicFirstName+" "+publicLastName;
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("first_name", firstName);
+                                editor.putString("last_name", lastName);
+                                editor.putString("phone_number", phoneNumber);
+                                editor.putString("email", email);
+                                editor.apply();
+
+                                name = firstName+" "+lastName;
                                 Preference mPref2 = findPreference("name");
-                                mPref2.setTitle(publicname);
-                                mPref2.setSummary(publicphone+"\n"+publicemail);
-                                Log.e("VOLLEY", publicFirstName);
+                                mPref2.setTitle(name);
+                                mPref2.setSummary(phoneNumber + "\n" + email);
 
-                                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (JSONException e) {
@@ -128,7 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", token1);
+                headers.put("Authorization", sharedPreferences.getString("Token", ""));
                 return headers;
             }
 
@@ -136,17 +132,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
-
-
-
-
-
-
-        //  PreferenceCategory preferenceCategory = new PreferenceCategory(preferenceScreen.getContext());
-        // preferenceCategory.setTitle("Wireless switches");
-        // Preference mPref2 = findPreference("name");
-        //mPref2.setTitle(publicphone);
-        //  preferenceScreen.addPreference(preferenceCategory);
 
     }
 
