@@ -29,6 +29,6 @@ public class UpdateActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content,
-                        new UPDATEFragment()).commit();
+                        new UpdateFragment()).commit();
     }
 }

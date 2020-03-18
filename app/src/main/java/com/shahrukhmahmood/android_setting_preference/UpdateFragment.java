@@ -2,8 +2,10 @@
 package com.shahrukhmahmood.android_setting_preference;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.preference.EditTextPreference;
@@ -23,10 +25,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UPDATEFragment extends PreferenceFragmentCompat {
+public class UpdateFragment extends PreferenceFragmentCompat {
 
-    private String firstNameEditValue;
-    private String lastNameEditValue;
+//    private String firstNameEditValue;
+//    private String lastNameEditValue;
     SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -65,11 +67,13 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    firstNameEditValue = newValue.toString();
-                    if (name_update()){
+                    String firstNameEditValue = newValue.toString();
+                    if (name_update(firstNameEditValue, ""))
+                    {
                         editTextFirstName.setSummary(firstNameEditValue);
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
             });
 
@@ -78,12 +82,24 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                    lastNameEditValue = newValue.toString();
-                    if(name_update()){
+                    String lastNameEditValue = newValue.toString();
+                    if(name_update("", lastNameEditValue))
+                    {
                         editTextLastName.setSummary(lastNameEditValue);
+                        return true;
                     }
-                    return true;
+                    return false;
+                }
+            });
 
+            editTextPhoneNumber.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+//                    editTextPhoneNumber.setIntent(new Intent(getContext(), Login.class));
+                    Intent i = new Intent(getContext(), Login.class);
+                    startActivity(i);
+                    return true;
                 }
             });
 
@@ -100,7 +116,7 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
     }
 
     boolean flag = false;
-    public boolean name_update() {
+    public boolean name_update(final String firstNameEditValue, final String lastNameEditValue) {
 
         String url = "http://52.15.104.184/update/name/";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -118,6 +134,9 @@ public class UPDATEFragment extends PreferenceFragmentCompat {
                         editor.putString("first_name", json.getString("first_name"));
                         editor.putString("last_name", json.getString("last_name"));
                         editor.apply();
+
+//                        editTextFirstName.setText("");
+//                        editTextLastName.setText("");
 
                         Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
                         flag = true;
