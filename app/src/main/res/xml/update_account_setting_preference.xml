@@ -18,7 +18,8 @@
             android:dialogMessage="Update first name"
             android:dialogTitle="First Name"
             android:positiveButtonText="SAVE"
-            android:negativeButtonText="" />
+            android:negativeButtonText=""
+            />
 
         <EditTextPreference
             android:key="lastName"
@@ -42,15 +43,14 @@
             android:dialogTitle="Phone"
             android:dialogMessage="Confirm your phone number."
             android:positiveButtonText="SAVE"
-            android:negativeButtonText=""/>
+            android:negativeButtonText="" />
 
-        <EditTextPreference
+        <Preference
             android:key="password"
             android:title="Password"
-            android:dialogMessage="Enter a new password"
-            android:dialogTitle="Password"
-            android:positiveButtonText="SAVE"
-            android:negativeButtonText=""/>
+            android:summary="********"/>
+
+
 
 <!--        <EditTextPreference-->
 <!--            android:key="check"-->

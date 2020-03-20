@@ -4,7 +4,9 @@
     package="com.shahrukhmahmood.android_setting_preference">
 
     <dist:module dist:instant="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".Login"></activity>
-
-        <activity android:name=".UpdateActivity">
+        <activity android:name=".Updatepassword"></activity>
+        <activity android:name=".Verifypassword" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".UpdateActivity" />
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
