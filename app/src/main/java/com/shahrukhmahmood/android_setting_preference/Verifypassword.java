@@ -35,10 +35,11 @@ public class Verifypassword extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     TextView error_message;
     TextView password_message;
-    //Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_verifypassword);
 
         sharedPreferences = Verifypassword.this.getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
@@ -46,8 +47,6 @@ public class Verifypassword extends AppCompatActivity {
         button_verify_pass= findViewById(R.id.verifypassword);
         error_message=findViewById(R.id.errormessage);
         password_message=findViewById(R.id.securitytext);
-
-
         button_verify_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

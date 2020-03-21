@@ -29,8 +29,6 @@ import java.util.Map;
 
 public class UpdateFragment extends PreferenceFragmentCompat {
 
-//    private String firstNameEditValue;
-//    private String lastNameEditValue;
     SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -44,31 +42,25 @@ public class UpdateFragment extends PreferenceFragmentCompat {
             final EditTextPreference editTextLastName = findPreference("lastName");
             final EditTextPreference editTextEmail = findPreference("email");
             final EditTextPreference editTextPhoneNumber = findPreference("phoneNumber");
-          //  final EditTextPreference editTextPassword = findPreference("password");
             final  Preference preferencePassword = findPreference("password");
 
-
-
             editTextFirstName.setSummary(sharedPreferences.getString("first_name", ""));
-//            editTextFirstName.setText(sharedPreferences.getString("first_name", ""));
+            editTextFirstName.setText(sharedPreferences.getString("first_name", ""));
             editTextFirstName.setIconSpaceReserved(false);
 
             editTextLastName.setSummary(sharedPreferences.getString("last_name", ""));
-//            editTextLastName.setText(sharedPreferences.getString("last_name", ""));
+            editTextLastName.setText(sharedPreferences.getString("last_name", ""));
             editTextLastName.setIconSpaceReserved(false);
 
             editTextEmail.setSummary(sharedPreferences.getString("email", ""));
-//            editTextEmail.setText(sharedPreferences.getString("email", ""));
+            editTextEmail.setText(sharedPreferences.getString("email", ""));
             editTextEmail.setIconSpaceReserved(false);
 
             editTextPhoneNumber.setSummary(sharedPreferences.getString("phone_number", ""));
-//            editTextPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
+            editTextPhoneNumber.setText(sharedPreferences.getString("phone_number", ""));
             editTextPhoneNumber.setIconSpaceReserved(false);
 
-            //editTextPassword.setSummary("********");
             preferencePassword.setIconSpaceReserved(false);
-           // editTextPassword.setIconSpaceReserved(false);
-
 
 
             editTextFirstName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -76,12 +68,16 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                     String firstNameEditValue = newValue.toString();
-                    if (name_update(firstNameEditValue, ""))
+                    boolean result = name_update(firstNameEditValue, "");
+                    if (result)
                     {
                         editTextFirstName.setSummary(firstNameEditValue);
+                        editTextFirstName.setText(firstNameEditValue);
                         return true;
                     }
-                    return false;
+                    else{
+                        return false;
+                    }
                 }
             });
 
@@ -91,12 +87,16 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                     String lastNameEditValue = newValue.toString();
-                    if(name_update("", lastNameEditValue))
+                    boolean result = name_update("", lastNameEditValue);
+                    if(result)
                     {
                         editTextLastName.setSummary(lastNameEditValue);
+                        editTextLastName.setText(lastNameEditValue);
                         return true;
                     }
-                    return false;
+                    else{
+                        return false;
+                    }
                 }
             });
 
@@ -111,8 +111,6 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                     return true;
                 }
             });
-
-
 
 
             preferencePassword.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -136,7 +134,7 @@ public class UpdateFragment extends PreferenceFragmentCompat {
 
     }
 
-    boolean flag = false;
+    private boolean flag = true;
     public boolean name_update(final String firstNameEditValue, final String lastNameEditValue) {
 
         String url = "http://52.15.104.184/update/name/";
@@ -155,9 +153,6 @@ public class UpdateFragment extends PreferenceFragmentCompat {
                         editor.putString("first_name", json.getString("first_name"));
                         editor.putString("last_name", json.getString("last_name"));
                         editor.apply();
-
-//                        editTextFirstName.setText("");
-//                        editTextLastName.setText("");
 
                         Toast.makeText(getActivity(), json.getString("message"), Toast.LENGTH_LONG).show();
                         flag = true;

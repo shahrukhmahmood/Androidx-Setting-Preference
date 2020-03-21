@@ -39,17 +39,15 @@ public class Updatepassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_updatepassword);
 
         sharedPreferences = Updatepassword.this.getSharedPreferences(AppPreferences, Context.MODE_PRIVATE);
-
 
         button_update_password=findViewById(R.id.update_password);
         editText_new_password=findViewById(R.id.new_password);
         editText_confirm_password=findViewById(R.id.confirm_password);
         checkkrlo=findViewById(R.id.conpassword);
-
-
 
         button_update_password.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +94,10 @@ public class Updatepassword extends AppCompatActivity {
 
 
                                     } else if (json.getString("status").equals("401") || json.getString("status").equals("404") || json.getString("status").equals("405") || json.getString("status").equals("406") || json.getString("status").equals("407")) {
+
+                                        Toast.makeText(Updatepassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                                    }
+                                    else{
 
                                         Toast.makeText(Updatepassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
                                     }
