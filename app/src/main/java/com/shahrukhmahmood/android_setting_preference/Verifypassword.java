@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,7 +52,15 @@ public class Verifypassword extends AppCompatActivity {
         button_verify_pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editText_password.setCursorVisible(false);
                 verify_password();
+            }
+        });
+        editText_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText_password.setCursorVisible(true);
+
             }
         });
     }
@@ -62,7 +72,31 @@ public class Verifypassword extends AppCompatActivity {
 
         if(password_verify.equals(""))
         {
-            Toast.makeText(Verifypassword.this, "Field cannot be empty", Toast.LENGTH_LONG).show();
+            password_message.setVisibility(View.GONE);
+            error_message.setText("Field cannot be empty");
+            error_message.setVisibility(View.VISIBLE);
+           editText_password.addTextChangedListener(new TextWatcher() {
+               @Override
+               public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+               }
+
+               @Override
+               public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                   editText_password.setCursorVisible(true);
+                   error_message.setVisibility(View.GONE);
+                   password_message.setVisibility(View.VISIBLE);
+
+               }
+
+               @Override
+               public void afterTextChanged(Editable s) {
+
+               }
+           });
+
+          //  Toast.makeText(Verifypassword.this, "Field cannot be empty", Toast.LENGTH_LONG).show();
         }
         else {
 
@@ -93,6 +127,25 @@ public class Verifypassword extends AppCompatActivity {
 
                                          password_message.setVisibility(View.GONE);
                                         error_message.setText(json.getString("message"));
+                                        error_message.setVisibility(View.VISIBLE);
+                                        editText_password.addTextChangedListener(new TextWatcher() {
+                                            @Override
+                                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                            }
+
+                                            @Override
+                                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                editText_password.setCursorVisible(true);
+                                                error_message.setVisibility(View.GONE);
+                                                password_message.setVisibility(View.VISIBLE);
+                                            }
+
+                                            @Override
+                                            public void afterTextChanged(Editable s) {
+
+                                            }
+                                        });
                                        // Toast.makeText(Verifypassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {

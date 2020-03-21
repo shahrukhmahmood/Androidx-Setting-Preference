@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +36,7 @@ public class Updatepassword extends AppCompatActivity {
     EditText editText_new_password;
     EditText editText_confirm_password;
     SharedPreferences sharedPreferences;
-    TextView checkkrlo;
+    TextView txt_error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +49,29 @@ public class Updatepassword extends AppCompatActivity {
         button_update_password=findViewById(R.id.update_password);
         editText_new_password=findViewById(R.id.new_password);
         editText_confirm_password=findViewById(R.id.confirm_password);
-        checkkrlo=findViewById(R.id.conpassword);
+        txt_error=findViewById(R.id.errormessage);
 
         button_update_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkkrlo.setVisibility(View.VISIBLE);
+                //checkkrlo.setVisibility(View.VISIBLE);
+                editText_confirm_password.setCursorVisible(false);
+                editText_new_password.setCursorVisible(false);
                 update_password();
+            }
+        });
+
+        editText_confirm_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText_confirm_password.setCursorVisible(true);
+            }
+        });
+
+        editText_new_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText_new_password.setCursorVisible(true);
             }
         });
 
@@ -64,9 +82,90 @@ public class Updatepassword extends AppCompatActivity {
         final String password_new = editText_new_password.getText().toString();
         final String password_confirm = editText_confirm_password.getText().toString();
 
-        if(!password_new.equals(password_confirm)) {
+        if(password_confirm.equals("") || password_new.equals("")){
 
-            Toast.makeText(Updatepassword.this, "Password fields not matched", Toast.LENGTH_LONG).show();
+            txt_error.setVisibility(View.VISIBLE);
+            txt_error.setText("Password fields cannot be empty");
+            editText_new_password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    txt_error.setVisibility(View.GONE);
+                    editText_new_password.setCursorVisible(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            editText_confirm_password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    txt_error.setVisibility(View.GONE);
+                    editText_confirm_password.setCursorVisible(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+        else if(!password_new.equals(password_confirm)) {
+
+            txt_error.setVisibility(View.VISIBLE);
+            txt_error.setText("Password fields are not same");
+
+            editText_new_password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    txt_error.setVisibility(View.GONE);
+                    editText_new_password.setCursorVisible(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            editText_confirm_password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    txt_error.setVisibility(View.GONE);
+                    editText_confirm_password.setCursorVisible(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
         }
 
         else {
@@ -99,7 +198,44 @@ public class Updatepassword extends AppCompatActivity {
                                     }
                                     else{
 
-                                        Toast.makeText(Updatepassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                                        txt_error.setVisibility(View.VISIBLE);
+                                        txt_error.setText(json.getString("message"));
+                                        //Toast.makeText(Updatepassword.this, json.getString("message"), Toast.LENGTH_LONG).show();
+                                        editText_new_password.addTextChangedListener(new TextWatcher() {
+                                            @Override
+                                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                            }
+
+                                            @Override
+                                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                                txt_error.setVisibility(View.GONE);
+                                            }
+
+                                            @Override
+                                            public void afterTextChanged(Editable s) {
+
+                                            }
+                                        });
+
+                                        editText_confirm_password.addTextChangedListener(new TextWatcher() {
+                                            @Override
+                                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                            }
+
+                                            @Override
+                                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                                txt_error.setVisibility(View.GONE);
+                                            }
+
+                                            @Override
+                                            public void afterTextChanged(Editable s) {
+
+                                            }
+                                        });
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
